@@ -2,12 +2,12 @@ const userModel = require('../models/userModel')
 const promoModel = require('../models/promoModel')
 exports.postUser = async (req, res) => {
     try {
-        const promo = promoModel.findOne({_id: req.params.idPromos})
+        const promo = promoModel.findOne({_id: req.params.idPromo})
         if (promo) {
             const newUser = new userModel(req.body)
             newUser.validateSync()
             await newUser.save()
-            await promo.updateOne({_id: req.params.idPromo}, { $push: { users: newUser._id }})
+            await promoModel.updateOne({_id: req.params.idPromo}, { $push: { users: newUser._id }})
             res.json("Votre utilisateur a bien ete creer")
         }else{
             res.json("aucune promo trouver")
